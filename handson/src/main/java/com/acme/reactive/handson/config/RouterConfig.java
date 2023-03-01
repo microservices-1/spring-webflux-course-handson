@@ -17,6 +17,8 @@ public class RouterConfig {
         return RouterFunctions
                 .route()
                 .GET("/r-fun/square/{i}", requestHandler::squareHandler)
+                .GET("/r-fun/table/{i}", requestHandler::tableHandler)
+                .POST("/r-fun/multi", requestHandler::multiHandler)
                 .build();
     }
 }
