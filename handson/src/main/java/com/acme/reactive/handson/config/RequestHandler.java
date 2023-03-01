@@ -17,6 +17,9 @@ public class RequestHandler {
 
     public Mono<ServerResponse> squareHandler(ServerRequest serverRequest) {
         int i = Integer.parseInt(serverRequest.pathVariable("i"));
+        if (i <= 0) {
+            return Mono.error(new IllegalArgumentException("must be > 0"));
+        }
         return ServerResponse.ok().body(mathService.square(i), Response.class);
     }
 
