@@ -14,7 +14,7 @@ import java.time.Duration;
 public class ReactiveMathService {
 
     public Mono<Response> square(int x) {
-        return Mono.fromSupplier(() -> new Response(x));
+        return Mono.fromSupplier(() -> new Response(x*x));
     }
 
     public Flux<Response> multiTable(int x) {
