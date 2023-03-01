@@ -1,5 +1,6 @@
 package com.acme.reactive.handson.controller;
 
+import com.acme.reactive.handson.dto.ErrorResponse;
 import com.acme.reactive.handson.dto.MultiplyRequest;
 import com.acme.reactive.handson.dto.Response;
 import com.acme.reactive.handson.service.ReactiveMathService;
@@ -24,6 +25,22 @@ public class ReactiveMathController {
     public Mono<Response> getSquare(@PathVariable int i) {
         return mathService.square(i);
     }
+
+
+    @GetMapping("/square/{i}/error")
+    public Mono<Response> getSquareError(@PathVariable int i) {
+
+        return Mono.just(i)
+                .handle((integer, synchronousSink) -> {
+                    if (integer <= 0) {
+                        synchronousSink.error(new IllegalArgumentException("Should be > 0"));
+                    } else {
+                        synchronousSink.next(integer);
+                    }
+                }).cast(Integer.class)
+                .flatMap(x -> mathService.square(x));
+    }
+
 
     @GetMapping(value = "/table/{i}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Response> getTable(@PathVariable int i) {
