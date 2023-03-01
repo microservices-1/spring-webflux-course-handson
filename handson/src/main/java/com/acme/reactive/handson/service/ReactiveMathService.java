@@ -1,5 +1,6 @@
 package com.acme.reactive.handson.service;
 
+import com.acme.reactive.handson.dto.MultiplyRequest;
 import com.acme.reactive.handson.dto.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,10 @@ public class ReactiveMathService {
                 .map(i -> new Response(i * x))
                 .log();
 
+    }
+
+    public Mono<Response> multiply(Mono<MultiplyRequest> requestMono) {
+        return requestMono.map(rq -> rq.getFirst() * rq.getSecond())
+                .map(Response::new);
     }
 }
